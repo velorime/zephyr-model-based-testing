@@ -7,8 +7,7 @@
 
 LOCAL INSTANCE Naturals
 
-Seq == INSTANCE Sequences
-LOCAL INSTANCE SequencesExt
+Seq == INSTANCE SequencesExt
 LOCAL INSTANCE Functions
 
 CONSTANTS
@@ -37,24 +36,24 @@ EnqueueThreadByPrio(prioq, thread_id, thread_prio) ==
     \* Evaluates to the priority queue that results from adding the 
     \* thread with id `thread_id` to `prioq` if the thread has priority `thread_prio`.
     LET
-        idx == SelectLastInSeq(
+        idx == Seq!SelectLastInSeq(
             prioq,
             LAMBDA tid: PrioHigherOrEqual(ThreadPrio(tid), thread_prio)
         )
     IN
-        InsertAt(prioq, idx+1, thread_id)
+        Seq!InsertAt(prioq, idx+1, thread_id)
 
 EnqueueThreadByPrioMapping(prioq, thread_id, thread_prio_mapping) ==
     \* Evaluates to the priority queue that results from adding the 
     \* thread with id `thread_id` to `prioq` if the thread priorities are given by 
     \* the function `thread_prio_mapping`.
     LET
-        idx == SelectLastInSeq(
+        idx == Seq!SelectLastInSeq(
             prioq,
             LAMBDA tid: PrioHigherOrEqual(thread_prio_mapping[tid], thread_prio_mapping[thread_id])
         )
     IN
-        InsertAt(prioq, idx+1, thread_id)
+        Seq!InsertAt(prioq, idx+1, thread_id)
 
 Enqueue(prioq, thread_id) ==
     \* Evaluates to the priority queue that results from adding the
@@ -79,9 +78,9 @@ Merge(dest_prioq, src_prioq) ==
 ThreadPrioHigherOrEqual(tid1, tid2) == PrioHigherOrEqual(ThreadPrio(tid1), ThreadPrio(tid2))
 \* A priority queue for the threads in the set `thread_ids`.
 \* The order of threads with the same priority is undefined.
-NewQueueFromThreads(thread_ids) == SetToSortSeq(thread_ids, ThreadPrioHigherOrEqual)
+NewQueueFromThreads(thread_ids) == Seq!SetToSortSeq(thread_ids, ThreadPrioHigherOrEqual)
 
 \* The result of removing thread `thread_id` from prioq.
-DequeueThread(prioq, thread_id) == Remove(prioq, thread_id)
+DequeueThread(prioq, thread_id) == Seq!Remove(prioq, thread_id)
 
 ====
